@@ -1,0 +1,65 @@
+//auth0
+node -v
+npm -v
+mkdir auth0
+cd autho
+npx create-react-app auth0
+cd auth0
+npm install @auth0/auth0-react
+
+src/index.js
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Auth0Provider } from "@auth0/auth0-react";
+import App from "./App";
+
+const domain = "your-domain";
+const clientId = "your_clientId";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Auth0Provider
+    domain={domain}
+    clientId={clientId}
+    authorizationParams={{ redirect_uri: window.location.origin }}
+  >
+    <App />
+  </Auth0Provider>
+);
+
+src/App.js
+
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+function App() {
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      {!isAuthenticated ? (
+        <button onClick={() => loginWithRedirect()}>Sign In / Sign Up</button>
+      ) : (
+        <div>
+          <h2>Welcome, {user.name}</h2>
+          <button
+            onClick={() =>
+              logout({ logoutParams: { returnTo: window.location.origin } })
+            }
+          >
+            Sign Out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+
+npm start(it takes you into localhost:3000 web)
+
+
+
+
+
